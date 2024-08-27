@@ -2,6 +2,9 @@ package co.za.pawpal.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -32,6 +35,14 @@ public class User {
 
     @Column(name = "Age")
     private int age;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "UserID", referencedColumnName = "UserID"),
+            inverseJoinColumns = @JoinColumn(name = "RoleID", referencedColumnName = "RoleID")
+    )
+    private List<Role> roles = new ArrayList<>();
 
 
     //Constructors
@@ -83,6 +94,13 @@ public class User {
         return age;
     }
 
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
 
     public void setId(int id) {
         this.id = id;

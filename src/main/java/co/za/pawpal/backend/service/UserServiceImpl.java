@@ -15,12 +15,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
 
-    private PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserServiceImpl(UserDAO theUserDAO, PasswordEncoder thePasswordEncoder) {
+    public UserServiceImpl(UserDAO theUserDAO) {
         this.userDAO = theUserDAO;
-        this.passwordEncoder = thePasswordEncoder;
 
     }
 
@@ -48,9 +45,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(User user) {
-         //Encode the password before saving the user
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         return userDAO.save(user);
     }
 
@@ -59,4 +53,16 @@ public class UserServiceImpl implements UserService {
     public void deleteByID(int id) {
         userDAO.deleteByID(id);
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userDAO.existsByUsername(username);
+    }
+
+
 }

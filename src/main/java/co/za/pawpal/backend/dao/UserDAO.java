@@ -1,9 +1,11 @@
 package co.za.pawpal.backend.dao;
 
 
+import co.za.pawpal.backend.entity.Role;
 import co.za.pawpal.backend.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 
@@ -15,4 +17,7 @@ public interface UserDAO {
 
     void deleteByID(int id);
 
+    Optional<User> findByUsername(String username);
+
+    Boolean existsByUsername(String username);
 }
