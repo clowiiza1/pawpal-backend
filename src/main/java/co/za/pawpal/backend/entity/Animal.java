@@ -1,7 +1,9 @@
 package co.za.pawpal.backend.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "animal")
@@ -10,7 +12,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AnimalID")
-    private int id;
+    private int animalID;
 
     @Column(name = "Name")
     private String name;
@@ -46,13 +48,21 @@ public class Animal {
     @Column(name = "Description")
     private String description;
 
+ @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "animal_categories",
+            joinColumns = @JoinColumn(name = "AnimalID", referencedColumnName = "AnimalID"),
+            inverseJoinColumns = @JoinColumn(name = "CategoryID", referencedColumnName = "CategoryID")
+    )
+    private List<AnimalCategory> categories = new ArrayList<>();
+
     // Getters and Setters
-    public int getId() {
-        return id;
+    public int getAnimalId() {
+        return animalID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int animalID) {
+        this.animalID = animalID;
     }
 
     public String getName() {
@@ -143,10 +153,12 @@ public class Animal {
         this.description = description;
     }
 
+
+
     @Override
     public String toString() {
         return "Animal{" +
-                "id=" + id +
+                "id=" + animalID +
                 ", name='" + name + '\'' +
                 ", species='" + species + '\'' +
                 ", breed='" + breed + '\'' +
@@ -158,6 +170,7 @@ public class Animal {
                 ", isVaccinated=" + isVaccinated +
                 ", isSterile=" + isSterile +
                 ", description='" + description + '\'' +
+                ", categories=" + categories + // Include categories in toString
                 '}';
     }
 }

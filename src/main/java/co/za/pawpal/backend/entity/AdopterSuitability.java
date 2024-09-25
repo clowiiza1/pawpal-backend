@@ -18,7 +18,7 @@ public class AdopterSuitability {
     private int noOfAnimals;
 
     @Column(name = "House_Type")
-    private int houseType;
+    private String houseType;
 
     @Column(name = "Adopter_Suitability")
     private String adopterSuitability;
@@ -48,11 +48,11 @@ public class AdopterSuitability {
         this.noOfAnimals = noOfAnimals;
     }
 
-    public int getHouseType() {
+    public String getHouseType() {
         return houseType;
     }
 
-    public void setHouseType(int houseType) {
+    public void setHouseType(String houseType) {
         this.houseType = houseType;
     }
 
