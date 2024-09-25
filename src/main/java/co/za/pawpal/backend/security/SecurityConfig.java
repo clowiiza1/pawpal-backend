@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
 ////Deleted it here-Ula for josh
-                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .httpBasic(Customizer.withDefaults());
