@@ -16,5 +16,7 @@ public interface AnimalDAO {
 
     Animal findByName(String name);
 
+    List<Animal> findByTypeAndCategories(String species, List<String> categories);
+
 
 }

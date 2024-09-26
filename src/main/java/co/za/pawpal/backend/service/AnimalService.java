@@ -16,4 +16,6 @@ public interface AnimalService {
     void deleteById(int id);
 
     Optional<Animal> findByName(String name);
+
+    List<Animal> findByTypeAndCategories(String species, List<String> categories);
 }

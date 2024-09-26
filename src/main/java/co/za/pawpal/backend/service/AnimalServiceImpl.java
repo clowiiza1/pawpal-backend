@@ -54,4 +54,9 @@ public class AnimalServiceImpl implements AnimalService {
     public Optional<Animal> findByName(String name) {
         return Optional.ofNullable(animalDAO.findByName(name));
     }
+
+    @Override
+    public List<Animal> findByTypeAndCategories(String species,List<String> categories) {
+        return animalDAO.findByTypeAndCategories(species,categories);
+    }
 }

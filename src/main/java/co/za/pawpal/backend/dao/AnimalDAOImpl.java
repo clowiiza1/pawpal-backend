@@ -61,4 +61,33 @@ public class AnimalDAOImpl implements AnimalDAO {
         query.setParameter("name", name);
         return query.getSingleResult();
     }
+
+    @Override
+    public List<Animal> findByTypeAndCategories(String species, List<String> categories) {
+        // Check if categories list is not empty
+        if (categories == null || categories.isEmpty()) {
+            // If no categories are provided, return animals only filtered by type
+            return entityManager.createQuery(
+                            "SELECT a FROM Animal a WHERE a.species = :animalType", Animal.class)
+                    .setParameter("animalType", species)
+                    .getResultList();
+        }
+
+        // If categories are provided, use the advanced query
+        TypedQuery<Animal> query = entityManager.createQuery(
+                "SELECT a FROM Animal a " +
+                        "JOIN a.categories c " +
+                        "WHERE a.species = :animalType " +
+                        "AND c.name IN :categories " +
+                        "GROUP BY a " +
+                        "HAVING COUNT(DISTINCT c.name) = :categoryCount",
+                Animal.class);
+
+        query.setParameter("animalType", species);
+        query.setParameter("categories", categories);
+        query.setParameter("categoryCount", categories.size());
+
+        return query.getResultList();
+    }
+
 }

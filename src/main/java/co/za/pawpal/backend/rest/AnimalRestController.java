@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.dto.AnimalFilterDto;
 import co.za.pawpal.backend.entity.Animal;
 import co.za.pawpal.backend.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,11 @@ public class AnimalRestController {
 
         animalService.deleteById(animalId);
         return "Deleted animal id - " + animalId;
+    }
+
+    @PostMapping("/animals/filter")
+    public List<Animal> getAnimalsByFilter(@RequestBody AnimalFilterDto animalFilterDto) {
+        return animalService.findByTypeAndCategories(animalFilterDto.getSpecies(),animalFilterDto.getCategories());
     }
 }
 

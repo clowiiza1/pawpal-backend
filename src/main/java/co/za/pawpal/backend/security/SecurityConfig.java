@@ -49,7 +49,6 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-////Deleted it here-Ula for josh
                     .requestMatchers("/api/**").permitAll()
                     .anyRequest().authenticated()
                 .and()

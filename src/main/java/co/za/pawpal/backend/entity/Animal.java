@@ -1,7 +1,10 @@
 package co.za.pawpal.backend.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "animal")
@@ -45,6 +48,17 @@ public class Animal {
 
     @Column(name = "Description")
     private String description;
+
+    @Column(name = "Image_Url")
+    private String imageUrl;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "animal_categories",
+            joinColumns = @JoinColumn(name = "AnimalID", referencedColumnName = "AnimalID"),
+            inverseJoinColumns = @JoinColumn(name = "CategoryID", referencedColumnName = "CategoryID")
+    )
+    private List<Category> categories = new ArrayList<>();
 
     // Getters and Setters
     public int getId() {
@@ -141,6 +155,14 @@ public class Animal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
