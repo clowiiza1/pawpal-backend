@@ -1,11 +1,14 @@
+// CategoryRestController.java
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.dto.CategoryDto;
 import co.za.pawpal.backend.entity.Category;
 import co.za.pawpal.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -19,27 +22,29 @@ public class CategoryRestController {
     }
 
     @GetMapping("/categories")
-    public List<Category> findAll() {
-        return categoryService.findAll();
+    public List<CategoryDto> findAll() {
+        return categoryService.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/categories/{categoryId}")
-    public Category getCategory(@PathVariable int categoryId) {
+    public CategoryDto getCategory(@PathVariable int categoryId) {
         Category category = categoryService.findById(categoryId);
         if (category == null) {
             throw new RuntimeException("Category ID not found - " + categoryId);
         }
-        return category;
+        return convertToDto(category);
     }
 
     @PostMapping("/categories")
-    public Category addCategory(@RequestBody Category category) {
-        return categoryService.save(category); 
+    public CategoryDto addCategory(@RequestBody Category category) {
+        return convertToDto(categoryService.save(category));
     }
 
     @PutMapping("/categories")
-    public Category updateCategory(@RequestBody Category category) {
-        return categoryService.save(category);
+    public CategoryDto updateCategory(@RequestBody Category category) {
+        return convertToDto(categoryService.save(category));
     }
 
     @DeleteMapping("/categories/{categoryId}")
@@ -51,5 +56,10 @@ public class CategoryRestController {
 
         categoryService.deleteById(categoryId);
         return "Deleted category id - " + categoryId;
+    }
+
+    // Helper method to convert Category to CategoryDto
+    private CategoryDto convertToDto(Category category) {
+        return new CategoryDto(category.getId(), category.getName());
     }
 }

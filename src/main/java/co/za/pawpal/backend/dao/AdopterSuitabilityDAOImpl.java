@@ -1,12 +1,14 @@
 package co.za.pawpal.backend.dao;
 
 import co.za.pawpal.backend.entity.AdopterSuitability;
+import co.za.pawpal.backend.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AdopterSuitabilityDAOImpl implements AdopterSuitabilityDAO {
@@ -41,4 +43,18 @@ public class AdopterSuitabilityDAOImpl implements AdopterSuitabilityDAO {
             entityManager.remove(adopterSuitability);
         }
     }
+
+    @Override
+    public Optional<AdopterSuitability> findByUserId(int userId) {
+        TypedQuery<AdopterSuitability> query = entityManager.createQuery(
+                "SELECT a FROM AdopterSuitability a WHERE a.userId = :userId", AdopterSuitability.class);
+        query.setParameter("userId", userId);
+        return query.getResultList().stream().findFirst();
+    }
+
+    @Override
+    public boolean existsByUserId(int userId) {
+        return this.findByUserId(userId).isPresent(); // Check presence of the Optional
+    }
+
 }

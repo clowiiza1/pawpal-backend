@@ -32,6 +32,21 @@ public class AdopterSuitabilityRestController {
         return adopterSuitability;
     }
 
+    @GetMapping("/adopter-suitability/user/{username}")
+    public AdopterSuitability getAdopterSuitabilityByUsername(@PathVariable String username) {
+        AdopterSuitability adopterSuitability = adopterSuitabilityService.findByUsername(username);
+        if (adopterSuitability == null) {
+            throw new RuntimeException("No AdopterSuitability record found for username - " + username);
+        }
+        return adopterSuitability;
+    }
+
+    // Updated endpoint to check if AdopterSuitability exists by username
+    @GetMapping("/adopter-suitability/user/{username}/exists")
+    public boolean checkIfAdopterSuitabilityExists(@PathVariable String username) {
+        return adopterSuitabilityService.existsByUsername(username);
+    }
+
     @PostMapping("/adopter-suitability")
     public AdopterSuitability addAdopterSuitability(@RequestBody AdopterSuitability adopterSuitability) {
         return adopterSuitabilityService.save(adopterSuitability);
