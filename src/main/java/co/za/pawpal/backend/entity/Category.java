@@ -2,49 +2,32 @@ package co.za.pawpal.backend.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "category")
 public class Category {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "CategoryID")
-        private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CategoryID")
+    private int categoryID;
 
-        @Column(name = "Category_Name")
-        private String name;
+    @Column(name = "Category_Name")
+    private String categoryName;
 
-        @ManyToMany(mappedBy = "categories")
-        private List<Animal> animals = new ArrayList<>();
-
-        // Getters and Setters
-
-    public void setId(int id) {
-        this.id = id;
+    // Getters and Setters
+    public int getCategoryID() {
+        return categoryID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 
-    public void setAnimals(List<Animal> animals) {
-        this.animals = animals;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Animal> getAnimals() {
-        return animals;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
-
-
