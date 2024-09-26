@@ -66,9 +66,9 @@ public class AnimalDAOImpl implements AnimalDAO {
     public List<Animal> findByTypeAndCategories(String species, List<String> categories) {
         // Check if categories list is not empty
         if (categories == null || categories.isEmpty()) {
-            // If no categories are provided, return animals only filtered by type
+            // If no categories are provided, return animals only filtered by type and status
             return entityManager.createQuery(
-                            "SELECT a FROM Animal a WHERE a.species = :animalType", Animal.class)
+                            "SELECT a FROM Animal a WHERE a.species = :animalType AND a.status = 'Available'", Animal.class)
                     .setParameter("animalType", species)
                     .getResultList();
         }
@@ -78,6 +78,7 @@ public class AnimalDAOImpl implements AnimalDAO {
                 "SELECT a FROM Animal a " +
                         "JOIN a.categories c " +
                         "WHERE a.species = :animalType " +
+                        "AND a.status = 'Available' " + // Add condition for available status
                         "AND c.name IN :categories " +
                         "GROUP BY a " +
                         "HAVING COUNT(DISTINCT c.name) = :categoryCount",
@@ -89,5 +90,6 @@ public class AnimalDAOImpl implements AnimalDAO {
 
         return query.getResultList();
     }
+
 
 }
