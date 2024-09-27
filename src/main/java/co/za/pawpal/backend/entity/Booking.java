@@ -29,6 +29,17 @@ public class Booking {
     @Column(name = "Booking_Type")
     private String bookingType;
 
+    @Column(name = "Time_Slot")
+    private int timeSlot;
+
+    public void setTimeSlot(int timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
+    public int getTimeSlot() {
+        return timeSlot;
+    }
+
     // Getters and Setters
     public int getBookingID() {
         return bookingID;
