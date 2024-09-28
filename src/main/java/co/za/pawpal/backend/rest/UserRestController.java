@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.entity.Role;
 import co.za.pawpal.backend.entity.User;
 import co.za.pawpal.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,16 @@ public class UserRestController {
 
         userService.deleteByID(userId);
         return "User deleted with id: " + userId;
+    }
+
+    @GetMapping("/users/role")
+    public List<Role> getUser() {
+        List<Role> theUser = userService.findRoles();
+
+        if (theUser == null) {
+            throw new RuntimeException("User id not found - ");
+        }
+        return theUser;
     }
 
 

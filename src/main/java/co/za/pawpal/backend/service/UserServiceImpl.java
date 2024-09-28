@@ -1,9 +1,12 @@
 package co.za.pawpal.backend.service;
 
 import co.za.pawpal.backend.dao.UserDAO;
+import co.za.pawpal.backend.entity.Role;
 import co.za.pawpal.backend.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,16 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
+
+    public Optional<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            return userDAO.findByUsername(authentication.getName());
+        }
+
+        return null; // or throw an exception, depending on your needs
+    }
 
     @Autowired
     public UserServiceImpl(UserDAO theUserDAO) {
@@ -62,6 +75,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByUsername(String username) {
         return userDAO.existsByUsername(username);
+    }
+
+    @Override
+    public List<Role> findRoles(){
+        // Fetch the user from the database using the DAO
+       return getCurrentUser().get().getRoles();
     }
 
 

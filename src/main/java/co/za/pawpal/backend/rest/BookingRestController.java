@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.dto.BookingDto;
 import co.za.pawpal.backend.entity.Booking;
 import co.za.pawpal.backend.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,13 @@ public class BookingRestController {
         return booking;
     }
 
-    @PostMapping("/bookings")
-    public Booking addBooking(@RequestBody Booking booking) {
+    @PostMapping("/booking")
+    public Booking addBooking(@RequestBody BookingDto booking) {
         return bookingService.save(booking);
     }
 
     @PutMapping("/bookings")
-    public Booking updateBooking(@RequestBody Booking booking) {
+    public Booking updateBooking(@RequestBody BookingDto booking) {
         return bookingService.save(booking);
     }
 

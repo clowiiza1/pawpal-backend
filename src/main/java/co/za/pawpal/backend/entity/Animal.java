@@ -1,6 +1,7 @@
 package co.za.pawpal.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class Animal {
     @Column(name = "Gender")
     private char gender;
 
+    @Setter
     @Column(name = "Weight")
     private double weight;
 
@@ -127,10 +129,6 @@ public class Animal {
 
     public double getWeight() {
         return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
     }
 
     public boolean isVaccinated() {

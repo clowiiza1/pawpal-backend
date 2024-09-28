@@ -77,7 +77,7 @@ public class Booking {
         return animalID;
     }
 
-    public void setAnimalID(int animalID) {
+    public void setAnimalID(Integer animalID) {
         this.animalID = animalID;
     }
 

@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.service;
 
+import co.za.pawpal.backend.entity.Role;
 import co.za.pawpal.backend.entity.User;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     Boolean existsByUsername(String username);
+
+    List<Role> findRoles();
 }
