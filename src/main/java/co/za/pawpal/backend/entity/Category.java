@@ -17,6 +17,9 @@ public class Category {
     @Column(name = "Category_Name")
     private String name;
 
+    @Column(name = "Animal_Type")
+    private String animalType;
+
     @ManyToMany(mappedBy = "categories")
     private List<Animal> animals = new ArrayList<>();
 
@@ -30,6 +33,15 @@ public class Category {
     public void setAnimals(List<Animal> animals) {
         this.animals = animals;
     }
+
+    public String getAnimalType() {
+        return animalType;
+    }
+
+    public void setAnimalType(String animalType) {
+        this.animalType = animalType;
+    }
+
     public int getId() {
         return id;
     }
