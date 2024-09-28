@@ -45,8 +45,7 @@ public class UserRestController {
 
     @PutMapping("/users")
     public User updateUser(@RequestBody User theUser) {
-
-        User dbUser = userService.save(theUser);
+        User dbUser = userService.update(theUser);
         return dbUser;
     }
 

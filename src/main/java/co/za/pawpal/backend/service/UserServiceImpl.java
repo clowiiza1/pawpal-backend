@@ -58,7 +58,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(User user) {
+
         return userDAO.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User update(User user) {
+        User user1 = getCurrentUser().orElseThrow(() -> new RuntimeException("User not found"));
+
+        user1.setEmail(user.getEmail());
+        user1.setFirstName(user.getFirstName());
+        user1.setLastName(user.getLastName());
+        user1.setAge(user.getAge());
+        user1.setPhoneNumber(user.getPhoneNumber());
+        user1.setRoles(user.getRoles());
+
+        return userDAO.save(user1);
     }
 
     @Transactional

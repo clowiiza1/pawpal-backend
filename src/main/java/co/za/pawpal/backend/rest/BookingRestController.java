@@ -53,4 +53,9 @@ public class BookingRestController {
         bookingService.deleteById(bookingId);
         return "Deleted booking id - " + bookingId;
     }
+
+    @PostMapping("/booking/volunteer")
+    public Booking addVolunteerBooking(@RequestBody String date) {
+        return bookingService.saveVolunteerBooking(date);
+    }
 }

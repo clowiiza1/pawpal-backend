@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.dto.VolunteerInfoDto;
 import co.za.pawpal.backend.entity.VolunteerInfo;
 import co.za.pawpal.backend.service.VolunteerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,19 @@ public class VolunteerInfoRestController {
         return volunteerInfo;
     }
 
+    @GetMapping("/volunteer-valid")
+    public Boolean isValid() {
+        return volunteerInfoService.isValid();
+    }
+
     @PostMapping("/volunteer-info")
-    public VolunteerInfo addVolunteerInfo(@RequestBody VolunteerInfo volunteerInfo) {
-        return volunteerInfoService.save(volunteerInfo);
+    public VolunteerInfo addVolunteerInfo(@RequestBody VolunteerInfoDto volunteerInfoDto) {
+        return volunteerInfoService.save(volunteerInfoDto);
     }
 
     @PutMapping("/volunteer-info")
-    public VolunteerInfo updateVolunteerInfo(@RequestBody VolunteerInfo volunteerInfo) {
-        return volunteerInfoService.save(volunteerInfo);
+    public VolunteerInfo updateVolunteerInfo(@RequestBody VolunteerInfoDto volunteerInfoDto) {
+        return volunteerInfoService.save(volunteerInfoDto);
     }
 
     @DeleteMapping("/volunteer-info/{volunteerId}")

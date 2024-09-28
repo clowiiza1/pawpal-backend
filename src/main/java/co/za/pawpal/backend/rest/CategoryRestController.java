@@ -5,6 +5,7 @@ import co.za.pawpal.backend.dto.CategoryDto;
 import co.za.pawpal.backend.entity.Category;
 import co.za.pawpal.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,19 @@ public class CategoryRestController {
         return convertToDto(category);
     }
 
+    @GetMapping("/categories/species/{species}")
+    public ResponseEntity<List<CategoryDto>> getCategoriesBySpecies(@PathVariable String species) {
+        List<Category> categories = categoryService.findCategoriesBySpecies(species);
+        if (categories.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content if no categories are found
+        }
+        // Convert List<Category> to List<CategoryDto>
+        List<CategoryDto> categoryDtos = categories.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(categoryDtos); // 200 OK with the list of CategoryDto objects
+    }
+
     @PostMapping("/categories")
     public CategoryDto addCategory(@RequestBody Category category) {
         return convertToDto(categoryService.save(category));
@@ -60,6 +74,10 @@ public class CategoryRestController {
 
     // Helper method to convert Category to CategoryDto
     private CategoryDto convertToDto(Category category) {
-        return new CategoryDto(category.getId(), category.getName());
+        CategoryDto dto = new CategoryDto();
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+        dto.setAnimalType(category.getAnimalType());
+        return dto;
     }
 }

@@ -9,5 +9,6 @@ public interface BookingService {
     List<Booking> findAll();
     Booking findById(int id);
     Booking save(BookingDto bookingDto);
+    Booking saveVolunteerBooking(String date);
     void deleteById(int id);
 }

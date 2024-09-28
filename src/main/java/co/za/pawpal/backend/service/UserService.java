@@ -12,6 +12,7 @@ public interface UserService {
     User findById(int id);
 
     User save(User user);
+    User update(User user);
 
     void deleteByID(int id);
 

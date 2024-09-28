@@ -30,6 +30,18 @@ public class VolunteerInfoDAOImpl implements VolunteerInfoDAO {
     }
 
     @Override
+    public VolunteerInfo findByUserId(int userId) {
+        String queryStr = "SELECT v FROM VolunteerInfo v WHERE v.userID = :userId";
+        TypedQuery<VolunteerInfo> query = entityManager.createQuery(queryStr, VolunteerInfo.class);
+        query.setParameter("userId", userId);
+        try {
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;  // or handle the exception as needed
+        }
+    }
+
+    @Override
     public VolunteerInfo save(VolunteerInfo volunteerInfo) {
         return entityManager.merge(volunteerInfo);
     }

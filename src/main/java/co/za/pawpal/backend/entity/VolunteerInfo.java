@@ -51,7 +51,7 @@ public class VolunteerInfo {
         this.preferredRoles = preferredRoles;
     }
 
-    public int getVolunteerHours() {
+    public Integer getVolunteerHours() {
         return volunteerHours;
     }
 

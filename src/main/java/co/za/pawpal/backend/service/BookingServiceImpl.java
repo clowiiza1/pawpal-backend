@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +63,27 @@ public class BookingServiceImpl implements BookingService {
         booking.setUserID(getCurrentUser().get().getId());
         booking.setAnimalID(NULL);
         booking.setStatus("Pending");
+        return bookingDAO.save(booking);
+    }
+    @Transactional
+    @Override
+    public Booking saveVolunteerBooking(String dateString) {
+        Booking booking = new Booking();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date date = formatter.parse(dateString);
+            booking.setBookingType("Volunteer");
+            booking.setBookingSlot(date);
+            booking.setTimeSlot(99);
+            booking.setUserID(getCurrentUser().get().getId());
+            booking.setAnimalID(NULL);
+            booking.setStatus("Pending");
+        } catch (ParseException e) {
+            // Handle parsing error
+            e.printStackTrace();
+        }
+
         return bookingDAO.save(booking);
     }
 
