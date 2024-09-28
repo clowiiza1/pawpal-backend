@@ -30,6 +30,18 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
+    public List<Category> findCategoriesBySpecies(String species) {
+        TypedQuery<Category> query = entityManager.createQuery(
+                "SELECT c FROM Category c WHERE c.animalType LIKE :species OR c.animalType LIKE :speciesWithComma OR c.animalType LIKE :commaSpecies",
+                Category.class
+        );
+        query.setParameter("species", species);
+        query.setParameter("speciesWithComma", "%," + species + "%");
+        query.setParameter("commaSpecies", "%" + species + ",%");
+        return query.getResultList();
+    }
+
+    @Override
     public Category save(Category category) {
         return entityManager.merge(category);
     }
