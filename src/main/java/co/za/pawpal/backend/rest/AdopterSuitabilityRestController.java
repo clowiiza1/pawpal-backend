@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.rest;
 
+import co.za.pawpal.backend.dto.AdopterSuitabilityDto;
 import co.za.pawpal.backend.entity.AdopterSuitability;
 import co.za.pawpal.backend.service.AdopterSuitabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,12 @@ public class AdopterSuitabilityRestController {
     }
 
     @PostMapping("/adopter-suitability")
-    public AdopterSuitability addAdopterSuitability(@RequestBody AdopterSuitability adopterSuitability) {
+    public AdopterSuitability addAdopterSuitability(@RequestBody AdopterSuitabilityDto adopterSuitability) {
         return adopterSuitabilityService.save(adopterSuitability);
     }
 
     @PutMapping("/adopter-suitability")
-    public AdopterSuitability updateAdopterSuitability(@RequestBody AdopterSuitability adopterSuitability) {
+    public AdopterSuitability updateAdopterSuitability(@RequestBody AdopterSuitabilityDto adopterSuitability) {
         return adopterSuitabilityService.save(adopterSuitability);
     }
 

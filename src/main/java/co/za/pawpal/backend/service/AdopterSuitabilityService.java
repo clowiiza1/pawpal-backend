@@ -1,5 +1,6 @@
 package co.za.pawpal.backend.service;
 
+import co.za.pawpal.backend.dto.AdopterSuitabilityDto;
 import co.za.pawpal.backend.entity.AdopterSuitability;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +10,7 @@ public interface AdopterSuitabilityService {
 
     AdopterSuitability findById(int id);
 
-    AdopterSuitability save(AdopterSuitability adopterSuitability);
+    AdopterSuitability save(AdopterSuitabilityDto adopterSuitability);
 
     void deleteById(int id);
 
