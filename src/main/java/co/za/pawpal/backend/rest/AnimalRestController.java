@@ -2,7 +2,9 @@ package co.za.pawpal.backend.rest;
 
 import co.za.pawpal.backend.dto.AnimalFilterDto;
 import co.za.pawpal.backend.entity.Animal;
+import co.za.pawpal.backend.entity.Category;
 import co.za.pawpal.backend.service.AnimalService;
+import co.za.pawpal.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +15,11 @@ import java.util.List;
 public class AnimalRestController {
 
     private AnimalService animalService;
-
+    private CategoryService categoryService;
     @Autowired
-    public AnimalRestController(AnimalService theAnimalService) {
+    public AnimalRestController(AnimalService theAnimalService, CategoryService theCategoryService) {
         animalService = theAnimalService;
+        categoryService = theCategoryService;
     }
 
     @GetMapping("/animals")
@@ -69,6 +72,24 @@ public class AnimalRestController {
     @PostMapping("/animals/filter")
     public List<Animal> getAnimalsByFilter(@RequestBody AnimalFilterDto animalFilterDto) {
         return animalService.findByTypeAndCategories(animalFilterDto.getSpecies(),animalFilterDto.getCategories());
+    }
+
+    @GetMapping("/animals/categories/{animalId}")
+    public List<Category> getAnimalCategories(@PathVariable int animalId) {
+        List<Category> categories = animalService.findCategoriesByAnimalId(animalId);
+
+        // Handle the case where no categories are found
+        if (categories == null || categories.isEmpty()) {
+            throw new RuntimeException("No categories found for animal ID - " + animalId);
+        }
+
+        // Return the list of categories
+        return categories;
+    }
+
+    @PutMapping("/animals/{animalId}/categories")
+    public Animal updateAnimalCategories(@PathVariable int animalId, @RequestBody List<Integer> categoryIds) {
+        return animalService.updateAnimalCategories(animalId, categoryIds);
     }
 }
 

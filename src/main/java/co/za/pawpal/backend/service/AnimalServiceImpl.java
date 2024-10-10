@@ -2,6 +2,7 @@ package co.za.pawpal.backend.service;
 
 import co.za.pawpal.backend.dao.AnimalDAO;
 import co.za.pawpal.backend.entity.Animal;
+import co.za.pawpal.backend.entity.Category;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,18 @@ public class AnimalServiceImpl implements AnimalService {
         return theAnimal;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Animal save(Animal animal) {
+        // If the animal already exists, find the existing animal from the database
+        Animal existingAnimal = animalDAO.findById(animal.getId());
+
+        if (existingAnimal != null) {
+            // Retain the existing categories if they are not being updated
+            animal.setCategories(existingAnimal.getCategories());
+        }
+
+        // Save or update the animal with the retained categories
         return animalDAO.save(animal);
     }
 
@@ -58,5 +68,17 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public List<Animal> findByTypeAndCategories(String species,List<String> categories) {
         return animalDAO.findByTypeAndCategories(species,categories);
+    }
+
+    @Override
+    public List<Category> findCategoriesByAnimalId(int animalId)
+    {
+        return animalDAO.findCategoriesByAnimalId(animalId);
+    }
+
+    @Transactional
+    @Override
+    public Animal updateAnimalCategories(int animalId, List<Integer> categoryIds) {
+        return animalDAO.updateAnimalCategories(animalId, categoryIds);
     }
 }

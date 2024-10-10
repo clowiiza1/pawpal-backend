@@ -62,9 +62,23 @@ public class Animal {
     )
     private List<Category> categories = new ArrayList<>();
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
+    }
+
+
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public void setId(int id) {
@@ -178,6 +192,7 @@ public class Animal {
                 ", isVaccinated=" + isVaccinated +
                 ", isSterile=" + isSterile +
                 ", description='" + description + '\'' +
+
                 '}';
     }
 }

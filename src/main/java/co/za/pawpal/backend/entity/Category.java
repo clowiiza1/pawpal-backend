@@ -48,7 +48,5 @@ public class Category {
     public String getName() {
         return name;
     }
-    public List<Animal> getAnimals() {
-        return animals;
-    }
+
 }
