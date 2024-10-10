@@ -51,6 +51,8 @@ public class CategoryRestController {
         return ResponseEntity.ok(categoryDtos); // 200 OK with the list of CategoryDto objects
     }
 
+
+
     @PostMapping("/categories")
     public CategoryDto addCategory(@RequestBody Category category) {
         return convertToDto(categoryService.save(category));
@@ -71,6 +73,8 @@ public class CategoryRestController {
         categoryService.deleteById(categoryId);
         return "Deleted category id - " + categoryId;
     }
+
+
 
     // Helper method to convert Category to CategoryDto
     private CategoryDto convertToDto(Category category) {

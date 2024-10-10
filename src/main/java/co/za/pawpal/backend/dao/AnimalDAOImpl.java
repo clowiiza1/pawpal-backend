@@ -1,6 +1,7 @@
 package co.za.pawpal.backend.dao;
 
 import co.za.pawpal.backend.entity.Animal;
+import co.za.pawpal.backend.entity.Category;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,40 @@ public class AnimalDAOImpl implements AnimalDAO {
         query.setParameter("categoryCount", categories.size());
 
         return query.getResultList();
+    }
+
+    @Override
+    public List<Category> findCategoriesByAnimalId(int animalId) {
+        // Create a query to get categories related to the animal by animalId
+        TypedQuery<Category> query = entityManager.createQuery(
+                "SELECT c FROM Category c " +
+                        "JOIN c.animals a " +
+                        "WHERE a.id = :animalId", Category.class);
+
+        // Set the parameter for animalId
+        query.setParameter("animalId", animalId);
+
+        // Execute the query and return the list of categories
+        return query.getResultList();
+    }
+
+    @Override
+    public Animal updateAnimalCategories(int animalId, List<Integer> categoryIds) {
+        Animal animal = entityManager.find(Animal.class, animalId);
+        if (animal == null) {
+            throw new RuntimeException("Animal not found with ID - " + animalId);
+        }
+
+        // Fetch the categories based on the provided category IDs
+        List<Category> categories = entityManager.createQuery("SELECT c FROM Category c WHERE c.id IN :categoryIds", Category.class)
+                .setParameter("categoryIds", categoryIds)
+                .getResultList();
+
+        // Set the new categories to the animal
+        animal.setCategories(categories);
+
+        // Merge to save the updated animal
+        return entityManager.merge(animal);
     }
 
 
