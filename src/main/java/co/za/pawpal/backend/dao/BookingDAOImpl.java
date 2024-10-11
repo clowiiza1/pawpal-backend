@@ -31,7 +31,16 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public Booking save(Booking booking) {
-        return entityManager.merge(booking);
+        if (booking.getBookingID() == null) {  // Use == for comparison with null
+            // For new entities
+            System.out.println("Persisting new booking: " + booking);
+            entityManager.persist(booking);
+        } else {
+            // For existing entities
+            System.out.println("Merging existing booking: " + booking.getBookingID());
+            entityManager.merge(booking);
+        }
+        return booking;
     }
 
     @Override
@@ -40,5 +49,13 @@ public class BookingDAOImpl implements BookingDAO {
         if (booking != null) {
             entityManager.remove(booking);
         }
+    }
+
+    @Override
+    public List<Booking> findByUserId(int userId) {
+        TypedQuery<Booking> query = entityManager.createQuery(
+                "SELECT b FROM Booking b WHERE b.userID = :userId", Booking.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
     }
 }

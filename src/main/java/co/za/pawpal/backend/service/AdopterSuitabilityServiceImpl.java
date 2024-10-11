@@ -53,10 +53,35 @@ public class AdopterSuitabilityServiceImpl implements AdopterSuitabilityService 
         int id = getCurrentUser().get().getId();
         AdopterSuitability adopterSuitability = new AdopterSuitability();
         adopterSuitability.setHouseType(adopterSuitabilityDto.getHouseType());
-        adopterSuitability.setNoOfAnimals(adopterSuitabilityDto.getNoAnimals());
+        adopterSuitability.setNoOfAnimals(adopterSuitabilityDto.getNoOfAnimals());
         adopterSuitability.setUserId(id);
         return adopterSuitabilityDAO.save(adopterSuitability);
     }
+
+    @Transactional
+    @Override
+    public AdopterSuitability update(AdopterSuitabilityDto adopterSuitabilityDto) {
+        int userId = getCurrentUser().get().getId();
+
+        // Fetch existing record by user ID
+        Optional<AdopterSuitability> existingRecord = adopterSuitabilityDAO.findByUserId(userId);
+
+        if (existingRecord.isPresent()) {
+            AdopterSuitability adopterSuitability = existingRecord.get();
+
+            // Update the existing record fields
+            adopterSuitability.setHouseType(adopterSuitabilityDto.getHouseType());
+            adopterSuitability.setNoOfAnimals(adopterSuitabilityDto.getNoOfAnimals());
+
+            // Make sure the primary key (id) is set to avoid insert instead of update
+            adopterSuitability.setAdopterSuitability(existingRecord.get().getAdopterSuitability());
+
+            return adopterSuitabilityDAO.save(adopterSuitability);
+        } else {
+            throw new RuntimeException("Adopter Suitability not found for user ID - " + userId);
+        }
+}
+
 
     @Transactional
     @Override

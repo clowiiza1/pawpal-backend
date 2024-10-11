@@ -55,7 +55,7 @@ public class AdopterSuitabilityRestController {
 
     @PutMapping("/adopter-suitability")
     public AdopterSuitability updateAdopterSuitability(@RequestBody AdopterSuitabilityDto adopterSuitability) {
-        return adopterSuitabilityService.save(adopterSuitability);
+        return adopterSuitabilityService.update(adopterSuitability);
     }
 
     @DeleteMapping("/adopter-suitability/{suitabilityId}")

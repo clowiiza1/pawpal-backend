@@ -9,4 +9,5 @@ public class BookingDto {
     private Date bookingDate;
     private String bookingType;
     private int bookingTime;
+    private String status;
 }

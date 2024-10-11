@@ -10,4 +10,5 @@ public interface VolunteerInfoDAO {
     VolunteerInfo save(VolunteerInfo volunteerInfo);
     void deleteById(int id);
     VolunteerInfo findByUserId(int userId);
+
 }

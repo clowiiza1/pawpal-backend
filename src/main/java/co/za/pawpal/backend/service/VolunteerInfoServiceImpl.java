@@ -3,6 +3,7 @@ package co.za.pawpal.backend.service;
 import co.za.pawpal.backend.dao.UserDAO;
 import co.za.pawpal.backend.dao.VolunteerInfoDAO;
 import co.za.pawpal.backend.dto.VolunteerInfoDto;
+import co.za.pawpal.backend.entity.AdopterSuitability;
 import co.za.pawpal.backend.entity.User;
 import co.za.pawpal.backend.entity.VolunteerInfo;
 import jakarta.transaction.Transactional;
@@ -44,7 +45,14 @@ public class VolunteerInfoServiceImpl implements VolunteerInfoService {
 
     @Override
     public VolunteerInfo findById(int id) {
-        return volunteerInfoDAO.findById(id);
+        return null;
+    }
+
+
+    @Override
+    public VolunteerInfo findByUserId() {
+        int userId = getCurrentUser().get().getId(); // Get the current user's ID
+        return volunteerInfoDAO.findByUserId(userId); // Fetch volunteer info by user ID
     }
 
     @Transactional
@@ -59,6 +67,32 @@ public class VolunteerInfoServiceImpl implements VolunteerInfoService {
         return volunteerInfoDAO.save(volunteerInfo);
     }
 
+    @Transactional
+    @Override
+    public VolunteerInfo update(VolunteerInfoDto volunteerInfoDto) {
+        int userId = getCurrentUser().get().getId();
+
+        // Fetch existing record by user ID
+        Optional<VolunteerInfo> existingRecord = Optional.ofNullable(volunteerInfoDAO.findByUserId(userId));
+
+        if (existingRecord.isPresent()) {
+            VolunteerInfo volunteerInfo = existingRecord.get();
+
+            // Update the existing record fields
+            volunteerInfo.setPreferredRoles(volunteerInfoDto.getPreferredRoles());
+            volunteerInfo.setVolunteerHours(volunteerInfoDto.getVolunteerHours());
+            volunteerInfo.setEmergencyContactName(volunteerInfoDto.getEmergencyContactName());
+            volunteerInfo.setEmergencyContactNumber(volunteerInfoDto.getEmergencyContactNumber());
+
+            // Set the primary key to ensure it's an update, not an insert
+            volunteerInfo.setVolunteerID(existingRecord.get().getVolunteerID());
+
+            // Save and return the updated entity
+            return volunteerInfoDAO.save(volunteerInfo);
+        } else {
+            throw new RuntimeException("Volunteer info not found for user ID - " + userId);
+        }
+    }
     @Transactional
     @Override
     public void deleteById(int id) {

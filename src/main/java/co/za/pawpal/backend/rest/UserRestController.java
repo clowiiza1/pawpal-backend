@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -33,6 +34,17 @@ public class UserRestController {
         return theUser;
     }
 
+    @GetMapping("/users/username/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        Optional<User> theUser = userService.findByUsername(username);
+
+        if (!theUser.isPresent()) {
+            throw new RuntimeException("User with username not found - " + username);
+        }
+        return theUser.get();
+    }
+
+
     @PostMapping("/users")
     public User addUser(@RequestBody User theUser) {
         //also just in case they pass an id in JSON, set id to 0
@@ -45,8 +57,25 @@ public class UserRestController {
 
     @PutMapping("/users")
     public User updateUser(@RequestBody User theUser) {
-        User dbUser = userService.update(theUser);
-        return dbUser;
+        // Retrieve the existing user from the database by ID
+        User existingUser = userService.findById(theUser.getId());
+
+        if (existingUser == null) {
+            throw new RuntimeException("User id not found - " + theUser.getId());
+        }
+
+        // Update only allowed fields (excluding username)
+        existingUser.setFirstName(theUser.getFirstName());
+        existingUser.setLastName(theUser.getLastName());
+        existingUser.setEmail(theUser.getEmail());
+        existingUser.setPhoneNumber(theUser.getPhoneNumber());
+        existingUser.setAge(theUser.getAge());
+        existingUser.setRoles(theUser.getRoles());
+
+        // Call the service to save the updated user
+        User updatedUser = userService.update(existingUser);
+
+        return updatedUser;
     }
 
     @DeleteMapping("/users/{userId}")

@@ -24,11 +24,11 @@ public class VolunteerInfoRestController {
         return volunteerInfoService.findAll();
     }
 
-    @GetMapping("/volunteer-info/{volunteerId}")
-    public VolunteerInfo getVolunteerInfo(@PathVariable int volunteerId) {
-        VolunteerInfo volunteerInfo = volunteerInfoService.findById(volunteerId);
+    @GetMapping("/volunteer-info/user/")
+    public VolunteerInfo getVolunteerInfoByUserId() {
+        VolunteerInfo volunteerInfo = volunteerInfoService.findByUserId();
         if (volunteerInfo == null) {
-            throw new RuntimeException("Volunteer ID not found - " + volunteerId);
+            throw new RuntimeException("Volunteer information not found for user ID - " );
         }
         return volunteerInfo;
     }
@@ -45,7 +45,7 @@ public class VolunteerInfoRestController {
 
     @PutMapping("/volunteer-info")
     public VolunteerInfo updateVolunteerInfo(@RequestBody VolunteerInfoDto volunteerInfoDto) {
-        return volunteerInfoService.save(volunteerInfoDto);
+        return volunteerInfoService.update(volunteerInfoDto);
     }
 
     @DeleteMapping("/volunteer-info/{volunteerId}")

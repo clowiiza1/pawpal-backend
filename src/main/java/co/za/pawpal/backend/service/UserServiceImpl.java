@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
+
 
     public Optional<User> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -65,17 +67,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User update(User user) {
-        User user1 = getCurrentUser().orElseThrow(() -> new RuntimeException("User not found"));
+        // Find the existing user using the user ID
+        User existingUser = userDAO.findById(user.getId());
 
-        user1.setEmail(user.getEmail());
-        user1.setFirstName(user.getFirstName());
-        user1.setLastName(user.getLastName());
-        user1.setAge(user.getAge());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setRoles(user.getRoles());
+        if (existingUser == null) {
+            throw new RuntimeException("User not found with id: " + user.getId());
+        }
 
-        return userDAO.save(user1);
+        // Update only allowed fields (excluding username)
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        existingUser.setAge(user.getAge());
+        existingUser.setRoles(user.getRoles());
+
+        return userDAO.save(existingUser);  // Save updated user via UserDAO
     }
+
 
     @Transactional
     @Override

@@ -53,4 +53,6 @@ public class VolunteerInfoDAOImpl implements VolunteerInfoDAO {
             entityManager.remove(volunteerInfo);
         }
     }
+
+
 }

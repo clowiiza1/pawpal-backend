@@ -9,4 +9,6 @@ public interface BookingDAO {
     Booking findById(int id);
     Booking save(Booking booking);
     void deleteById(int id);
+
+    List<Booking> findByUserId(int userId);
 }

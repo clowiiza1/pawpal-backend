@@ -11,7 +11,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BookingID")
-    private int bookingID;
+    private Integer bookingID;
 
     @Column(name = "Booking_Slot")
     @Temporal(TemporalType.DATE)
@@ -41,7 +41,7 @@ public class Booking {
     }
 
     // Getters and Setters
-    public int getBookingID() {
+    public Integer getBookingID() {
         return bookingID;
     }
 
